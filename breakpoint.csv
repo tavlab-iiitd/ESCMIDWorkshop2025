@@ -1,0 +1,20 @@
+organism,antibiotic,s_dd,i_dd,r_dd
+Escherichia coli,Amikacin,17,NA,16
+Escherichia coli,Cefoperazone-sulbactam,NA,NA,NA
+Escherichia coli,Ciprofloxacin,25,24,21
+Escherichia coli,Doxycycline,19,18,15
+Escherichia coli,Ertapenem,27,26,23
+Escherichia coli,Imipenem,23,22,19
+Escherichia coli,Meropenem,28,27,24
+Escherichia coli,Piperacillin-tazobactam,20,19,16
+Klebsiella pneumoniae,Amikacin,17,NA,16
+Klebsiella pneumoniae,Cefepime,26,25,18
+Klebsiella pneumoniae,Cefoperazone-sulbactam,NA,NA,NA
+Klebsiella pneumoniae,Cefotaxime,26,25,22
+Klebsiella pneumoniae,Ceftazidime,21,20,16
+Klebsiella pneumoniae,Ciprofloxacin,25,24,21
+Klebsiella pneumoniae,Doxycycline,19,18,15
+Klebsiella pneumoniae,Ertapenem,27,26,23
+Klebsiella pneumoniae,Imipenem,23,22,19
+Klebsiella pneumoniae,Meropenem,28,27,24
+Klebsiella pneumoniae,Piperacillin-tazobactam,20,19,16

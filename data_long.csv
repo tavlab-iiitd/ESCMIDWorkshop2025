@@ -1,0 +1,20 @@
+ID,date of sample collection,type of sample,date of admission,department,location in hospital,gender,dob,location,DD_Values,antibiotic,organism
+A1,01/01/17,Blood,31/12/16,Hepatology,Ward,male,31/12/48,A,25,Amikacin,Escherichia coli
+A1,01/01/17,Blood,31/12/16,Hepatology,Ward,male,31/12/48,A,27,Cefoperazone-sulbactam,Escherichia coli
+A1,01/01/17,Blood,31/12/16,Hepatology,Ward,male,31/12/48,A,22,Ciprofloxacin,Escherichia coli
+A2,01/01/17,Blood,31/12/16,Hepatology,Ward,female,31/12/48,A,11,Doxycycline,Escherichia coli
+A2,01/01/17,Blood,31/12/16,Hepatology,Ward,female,31/12/48,A,10,Ertapenem,Escherichia coli
+A2,01/01/17,Blood,31/12/16,Hepatology,Ward,female,31/12/48,A,30,Imipenem,Escherichia coli
+A2,01/01/17,Blood,31/12/16,Hepatology,Ward,female,31/12/48,A,6,Meropenem,Escherichia coli
+A2,01/01/17,Blood,31/12/16,Hepatology,Ward,female,31/12/48,A,36,Piperacillin-tazobactam,Escherichia coli
+A3,01/01/17,Blood,01/01/17,Nephrology,OPD,male,01/01/76,B,8,Amikacin,Klebsiella pneumoniae
+A3,01/01/17,Blood,01/01/17,Nephrology,OPD,male,01/01/76,B,18,Cefepime,Klebsiella pneumoniae
+A3,01/01/17,Blood,01/01/17,Nephrology,OPD,male,01/01/76,B,9,Cefoperazone-sulbactam,Klebsiella pneumoniae
+A3,01/01/17,Blood,01/01/17,Nephrology,OPD,male,01/01/76,B,29,Cefotaxime,Klebsiella pneumoniae
+A4,01/01/17,Blood,01/01/17,Nephrology,OPD,female,01/01/76,B,19,Ceftazidime,Klebsiella pneumoniae
+A4,01/01/17,Blood,01/01/17,Nephrology,OPD,female,01/01/76,B,49,Ciprofloxacin,Klebsiella pneumoniae
+A4,01/01/17,Blood,01/01/17,Nephrology,OPD,female,01/01/76,B,10,Doxycycline,Klebsiella pneumoniae
+A4,01/01/17,Blood,01/01/17,Nephrology,OPD,female,01/01/76,B,50,Ertapenem,Klebsiella pneumoniae
+A4,01/01/17,Blood,01/01/17,Nephrology,OPD,female,01/01/76,B,39,Imipenem,Klebsiella pneumoniae
+A4,01/01/17,Blood,01/01/17,Nephrology,OPD,female,01/01/76,B,28,Meropenem,Klebsiella pneumoniae
+A4,01/01/17,Blood,01/01/17,Nephrology,OPD,female,01/01/76,B,7,Piperacillin-tazobactam,Klebsiella pneumoniae
