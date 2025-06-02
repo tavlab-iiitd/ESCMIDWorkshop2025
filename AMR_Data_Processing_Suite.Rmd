@@ -1,0 +1,141 @@
+---
+title: "AMR Preprocessing Suite"
+author: "Tavpritesh Sethi"
+date: "2025-06-20"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load necessary libraries
+
+```{r}
+library(tidyverse)   # Data manipulation & visualization
+library(readr)       # Reading data
+library(janitor)     # Clean column names
+library(DT)          # Data tables
+library(zoo)         # Moving averages
+```
+Define a Function for Loading Data
+```{r}
+#Loading Data
+load_data <- function(file_path) {
+  read_csv(file_path, show_col_types = FALSE) %>% clean_names()
+}
+```
+Load Data
+```{r}
+data <- load_data("synthetic_data_2_10k_wide.csv")
+head(data)
+```
+Guess Identifier Columns
+```{r}
+guess_identifiers <- function(df, exclude_cols = NULL) {
+  n_rows <- nrow(df)
+  potential_id_cols <- setdiff(names(df), exclude_cols)
+  
+  tibble(
+    column = potential_id_cols,
+    unique_vals = sapply(df[, potential_id_cols, drop = FALSE], n_distinct),
+    missing = sapply(df[, potential_id_cols, drop = FALSE], \(x) mean(is.na(x))),
+    type = sapply(df[, potential_id_cols, drop = FALSE], \(x) class(x)[1])
+  ) %>%
+    mutate(
+      pct_unique = unique_vals / n_rows * 100,
+      likely_identifier = case_when(
+        str_detect(column, "id|sample|patient|date") ~ TRUE,
+        pct_unique > 90 & missing < 0.1 ~ TRUE,
+        TRUE ~ FALSE
+      )
+    ) %>% filter(likely_identifier)
+}
+
+guessed_ids <- guess_identifiers(data, exclude_cols = c("family", "year", "cefepime", "country"))
+guessed_ids
+```
+Explicitly define identifier and antibiotic columns
+```{r}
+id_cols <- c("sample_id", "country", "year", "patient_id", "visit_date")
+abx_cols <- c("cefepime", "amikacin", "meropenem")  # Example antibiotics
+```
+
+Check that antibiotic columns exist
+```{r}
+abx_cols <- intersect(abx_cols, names(data))  # Remove missing ones
+```
+
+Toggle Wide ↔ Long Format
+```{r}
+toggle_wide_long <- function(df, id_cols, abx_cols) {
+  # Convert to long format using only antibiotics
+  long_df <- df %>%
+    pivot_longer(cols = all_of(abx_cols), names_to = "antibiotic", values_to = "category")
+  
+  # Convert back to wide
+  wide_df <- long_df %>%
+    pivot_wider(names_from = antibiotic, values_from = category,
+                 values_fn = list(category = ~ paste(unique(.), collapse = "; ")))
+  
+  list(long = long_df, wide = wide_df)
+}
+
+# Perform toggle
+converted <- toggle_wide_long(data, id_cols, abx_cols)
+head(converted$long)
+head(converted$wide)
+```
+Summarize Data
+```{r}
+summarize_data <- function(df) {
+  tibble(
+    Column = names(df),
+    Type = sapply(df, \(x) class(x)[1]),
+    Missing = sapply(df, \(x) sum(is.na(x))),
+    Missing_Pct = round(sapply(df, \(x) mean(is.na(x))) * 100, 2)
+  )
+}
+
+summarize_data(data)
+```
+Show Unique Values
+```{r}
+get_unique_values <- function(df, column) {
+  unique(df[[column]])
+}
+```
+
+Plot Top Categories
+```{r}
+plot_top_categories <- function(df, column, top_n = 15) {
+  df %>%
+    count(.data[[column]]) %>%
+    slice_max(n, n = top_n) %>%
+    ggplot(aes(x = reorder(.data[[column]], -n), y = n)) +
+    geom_bar(stat = "identity", fill = "skyblue") +
+    labs(x = column, y = "Count") +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+}
+
+plot_top_categories(data, "country", top_n = 10)
+```
+
+```{r}
+plot_global_trends <- function(df, family_col, year_col, antibiotic_col) {
+  df %>%
+    group_by(.data[[year_col]]) %>%
+    summarise(resistant = sum(.data[[antibiotic_col]] == "R", na.rm = TRUE),
+              total = n(),
+              pct = resistant / total * 100) %>%
+    mutate(ma = zoo::rollmean(pct, 3, fill = "extend")) %>%
+    ggplot(aes(x = .data[[year_col]], y = ma)) +
+    geom_line(color = "blue") +
+    geom_point(color = "red") +
+    theme_minimal() +
+    labs(title = "Global Resistance Trend", x = "Year", y = "Resistance % (3-year MA)")
+}
+
+plot_global_trends(data, "family", "year", "cefepime")
+```
